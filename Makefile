@@ -14,9 +14,9 @@ ${NAME}: ${OBJ}
 	@${CC} ${FLAG} $^ -o ${NAME}
 
 clean:
-	@${RM} ${OBJ} ${OBJ_BNS}
+	@${RM} ${OBJ}
 
 fclean: clean
-	@${RM} ${NAME} ${NAME_BNS}
+	@${RM} ${NAME}
 
 re: fclean all
