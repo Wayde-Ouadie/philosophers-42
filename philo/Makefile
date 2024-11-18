@@ -1,22 +1,22 @@
-SRC = philo.c utils.c ft_fprintf.c error.c
+SRC = philo.c parsing_args.c ft_fprintf.c error.c
 OBJ = ${SRC:.c=.o}
 NAME = philo
 CC = cc
 RM = rm -f
-FLAG = -Wall -Wextra -Werror #-g -fsanitize=address
+FLAG = -Wall -Wextra -Werror -g -fsanitize=address
 
 all: ${NAME}
 
 %.o:%.c philo.h
-	${CC} ${FLAG} -c $<
+	@${CC} ${FLAG} -c $<
 
 ${NAME}: ${OBJ}
-	${CC} ${FLAG} $^ -o ${NAME}
+	@${CC} ${FLAG} $^ -o ${NAME}
 
 clean:
-	${RM} ${OBJ}
+	@${RM} ${OBJ}
 
 fclean: clean
-	${RM} ${NAME}
+	@${RM} ${NAME}
 
 re: fclean all
