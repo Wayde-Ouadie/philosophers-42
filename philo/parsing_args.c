@@ -6,7 +6,7 @@
 /*   By: oel-feng@student.42.fr <oel-feng>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 04:49:04 by oel-feng          #+#    #+#             */
-/*   Updated: 2024/11/18 08:41:46 by oel-feng@st      ###   ########.fr       */
+/*   Updated: 2024/11/18 08:44:02 by oel-feng@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@ void	parsing(char **str)
 
 static int	ft_atoi(char *str)
 {
-	int		i;
-	long	tmp;
-	long	result;
+	int	i;
+	int	tmp;
+	int	result;
 
 	i = 0;
 	result = 0;
@@ -46,10 +46,10 @@ static int	ft_atoi(char *str)
 	{
 		tmp = result * 10 - (48 - str[i++]);
 		if (tmp < result)
-			error("Error: Input bigger than int max.");
+			error("Error: Input number smaller or equal to int max.");
 		result = tmp;
 	}
-	return ((int)result);
+	return (result);
 }
 
 int	*tab_fill(int ac, char **av)
