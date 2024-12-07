@@ -6,7 +6,7 @@
 /*   By: oel-feng@student.42.fr <oel-feng>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 04:49:04 by oel-feng          #+#    #+#             */
-/*   Updated: 2024/11/18 08:44:02 by oel-feng@st      ###   ########.fr       */
+/*   Updated: 2024/12/07 15:53:18 by oel-feng@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	parsing(char **str)
 		while (str[j][++i])
 		{
 			if (i == 0 && (str[j][i] == '+' || str[j][i] == '-'))
-				error("Error: Input number without sign.");
+				error("Error: Input only positive number without sign.");
 			else if (!(str[j][i] >= '0' && str[j][i] <= '9'))
 				error("Error: Input valid number.");
 		}
@@ -49,20 +49,27 @@ static int	ft_atoi(char *str)
 			error("Error: Input number smaller or equal to int max.");
 		result = tmp;
 	}
+	if (result = 0)
+		error("Error: Inputs can't equal 0.");
 	return (result);
 }
 
-int	*tab_fill(int ac, char **av)
+void	init_set(t_set *set, int ac, char **av)
 {
 	int	i;
-	int	*tab;
 
 	parsing(av);
-	1 && (i = 0, tab = malloc(sizeof(int) * ac));
-	if (!tab)
-		return (ft_fprintf(2, "%s\n", MALL_ERR), NULL);
-	while (++i < ac)
-		tab[i - 1] = ft_atoi(av[i]);
-	tab[i - 1] = '\0';
-	return (tab);
+	i = 0;
+	set->number = ft_atoi(av[1]);
+	if (set->number > 200)
+		error("Error: Invalid number of philo.");
+	set->death_time = ft_atoi(av[2]);
+	set->eat_time = ft_atoi(av[3]);
+	set->sleep_time = ft_atoi(av[4]);
+	if (set->death_time < 60 || set->eat_time < 60 || set->sleep_time < 60)
+		error(INVALID_INPUT);
+	set->died = 0;
+	set->check_eat_1 = 0;
+	if (ac == 6)
+		set->eat_requi = ft_atoi(av[5]);
 }
