@@ -6,7 +6,7 @@
 /*   By: oel-feng@student.42.fr <oel-feng>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 14:48:16 by oel-feng@st       #+#    #+#             */
-/*   Updated: 2024/12/08 18:33:43 by oel-feng@st      ###   ########.fr       */
+/*   Updated: 2024/12/08 18:44:23 by oel-feng@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,9 @@ static void	eating_routine(t_philo *ph)
 	if (set->number == 1)
 	{
 		printer(set, ph->id, "has taken a fork");
-		usleep(set->death_time);
+		usleep(set->death_time * 1000);
+		printer(set, ph->id, "has died");
+		exit(EXIT_SUCCESS);
 	}
 	else
 	{

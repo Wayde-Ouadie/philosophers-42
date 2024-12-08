@@ -6,7 +6,7 @@
 /*   By: oel-feng@student.42.fr <oel-feng>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 18:01:10 by oel-feng@st       #+#    #+#             */
-/*   Updated: 2024/12/08 18:07:03 by oel-feng@st      ###   ########.fr       */
+/*   Updated: 2024/12/08 18:43:11 by oel-feng@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,22 +28,26 @@ void	end_routine(t_set *set, t_philo *philo)
 	pthread_mutex_destroy(&set->death_check);
 }
 
+static void	check_death_helper(t_set *set, t_philo *philo, int i)
+{
+	pthread_mutex_lock(&set->last_meal);
+	if (calc_time() - philo[i].last_meal_time > set->death_time)
+	{
+		printer(set, philo[i].id, "died");
+		pthread_mutex_lock(&set->death_check);
+		set->died = 1;
+		pthread_mutex_unlock(&set->death_check);
+	}
+	pthread_mutex_unlock(&set->last_meal);
+}
+
 void	check_death(t_set *set, t_philo *philo, int i)
 {
 	while (!set->died)
 	{
 		i = -1;
 		while (++i < set->number && !set->died)
-		{
-			pthread_mutex_lock(&set->last_meal);
-			if (calc_time() - philo[i].last_meal_time > set->death_time)
-			{
-				printer(set, philo[i].id, "died");
-				1 && (pthread_mutex_lock(&set->death_check), set->died = 1);
-				pthread_mutex_unlock(&set->death_check);
-			}
-			pthread_mutex_unlock(&set->last_meal);
-		}
+			check_death_helper(set, philo, i);
 		if (set->died)
 			break ;
 		i = 0;
@@ -52,7 +56,8 @@ void	check_death(t_set *set, t_philo *philo, int i)
 			i++;
 		if (i == set->number)
 		{
-			1 && (pthread_mutex_lock(&set->death_check), set->died = 1);
+			pthread_mutex_lock(&set->death_check);
+			set->died = 1;
 			pthread_mutex_unlock(&set->death_check);
 			break ;
 		}
