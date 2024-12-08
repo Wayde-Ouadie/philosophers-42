@@ -6,73 +6,37 @@
 /*   By: oel-feng@student.42.fr <oel-feng>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 14:48:16 by oel-feng@st       #+#    #+#             */
-/*   Updated: 2024/12/08 17:19:05 by oel-feng@st      ###   ########.fr       */
+/*   Updated: 2024/12/08 18:33:43 by oel-feng@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-static void	check_death(t_set *set, t_philo *philo)
-{
-	int	i;
-
-	while (!set->died)
-	{
-		i = -1;
-		while (++i < set->number && !set->died)
-		{
-			pthread_mutex_lock(&set->last_meal);
-			if (calc_time() - philo[i].last_meal_time > set->death_time)
-			{
-				printer(set, philo[i].id, "died");
-				pthread_mutex_lock(&set->death_check);
-				set->died = 1;
-				pthread_mutex_unlock(&set->death_check);
-			}
-			pthread_mutex_unlock(&set->last_meal);
-		}
-		if (set->died)
-			break ;
-	}
-}
-
-static void	check_meal_req(t_set *set, t_philo *philo)
-{
-	int	i;
-
-	while (!set->died)
-	{
-		i = 0;
-		while (set->eat_requi != -1
-			&& i < set->number && philo[i].eaten >= set->eat_requi)
-			i++;
-		if (i == set->number)
-		{
-			pthread_mutex_lock(&set->death_check);
-			set->died = 1;
-			pthread_mutex_unlock(&set->death_check);
-			break ;
-		}
-	}
-}
 
 static void	eating_routine(t_philo *ph)
 {
 	t_set	*set;
 
 	set = ph->set;
-	pthread_mutex_lock(&set->forks[ph->l_fork]);
-	printer(set, ph->id, "has taken a fork");
-	pthread_mutex_lock(&set->forks[ph->r_fork]);
-	printer(set, ph->id, "has taken a fork");
-	pthread_mutex_lock(&set->last_meal);
-	printer(set, ph->id, "is eating");
-	ph->last_meal_time = calc_time();
-	pthread_mutex_unlock(&set->last_meal);
-	usleep(set->eat_time * 1000);
-	ph->eaten++;
-	pthread_mutex_unlock(&set->forks[ph->l_fork]);
-	pthread_mutex_unlock(&set->forks[ph->r_fork]);
+	if (set->number == 1)
+	{
+		printer(set, ph->id, "has taken a fork");
+		usleep(set->death_time);
+	}
+	else
+	{
+		pthread_mutex_lock(&set->forks[ph->l_fork]);
+		printer(set, ph->id, "has taken a fork");
+		pthread_mutex_lock(&set->forks[ph->r_fork]);
+		printer(set, ph->id, "has taken a fork");
+		pthread_mutex_lock(&set->last_meal);
+		printer(set, ph->id, "is eating");
+		ph->last_meal_time = calc_time();
+		pthread_mutex_unlock(&set->last_meal);
+		usleep(set->eat_time * 1000);
+		ph->eaten++;
+		pthread_mutex_unlock(&set->forks[ph->l_fork]);
+		pthread_mutex_unlock(&set->forks[ph->r_fork]);
+	}
 }
 
 static void	*routine(void *philo)
@@ -115,10 +79,9 @@ void	init_routine(t_set *set)
 	while (++i < set->number)
 	{
 		if (pthread_create(&philo[i].thread_id, NULL, routine, &philo[i]))
-			error("Error: Thread creation failed.");
+			error("Error: Thread creation failed.", 1);
 		philo[i].last_meal_time = calc_time();
 	}
-	check_death(set, philo);
-	check_meal_req(set, philo);
+	check_death(set, philo, -1);
 	end_routine(set, philo);
 }

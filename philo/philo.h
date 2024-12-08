@@ -6,7 +6,7 @@
 /*   By: oel-feng@student.42.fr <oel-feng>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 14:48:19 by oel-feng@st       #+#    #+#             */
-/*   Updated: 2024/12/08 17:19:18 by oel-feng@st      ###   ########.fr       */
+/*   Updated: 2024/12/08 18:34:10 by oel-feng@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,15 +51,17 @@ typedef struct s_set
 	size_t			start_time;
 	pthread_mutex_t	death_check;
 	pthread_mutex_t	last_meal;
+	pthread_mutex_t	printing;
 	pthread_mutex_t	forks[201];
 	t_philo			philo[201];
 }	t_set;
 
 size_t	calc_time(void);
-void	error(char *err_msg);
 void	init_routine(t_set *set);
+void	error(char *str, int check);
 void	printer(t_set *set, int id, char *msg);
 void	init_set(t_set *set, int ac, char **av);
 void	end_routine(t_set *set, t_philo *philo);
+void	check_death(t_set *set, t_philo *philo, int i);
 
 #endif

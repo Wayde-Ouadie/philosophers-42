@@ -6,16 +6,15 @@
 /*   By: oel-feng@student.42.fr <oel-feng>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 14:48:22 by oel-feng@st       #+#    #+#             */
-/*   Updated: 2024/12/08 17:18:38 by oel-feng@st      ###   ########.fr       */
+/*   Updated: 2024/12/08 18:35:18 by oel-feng@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static void	error_print(char *str)
+void	error(char *str, int check)
 {
 	int		i;
-	size_t	size;
 
 	if (str)
 	{
@@ -24,20 +23,16 @@ static void	error_print(char *str)
 			i++;
 		write(2, str, i);
 	}
+	if (check == 1)
+		exit(EXIT_FAILURE);
 }
 
 void	printer(t_set *set, int id, char *msg)
 {
-	pthread_mutex_lock(&set->death_check);
+	pthread_mutex_lock(&set->printing);
 	if (!set->died)
 		printf("%ld %d %s\n", calc_time() - set->start_time, id, msg);
-	pthread_mutex_unlock(&set->death_check);
-}
-
-void	error(char *err_msg)
-{
-	error_print(err_msg);
-	exit(EXIT_FAILURE);
+	pthread_mutex_unlock(&set->printing);
 }
 
 size_t	calc_time(void)
@@ -54,10 +49,11 @@ int	main(int ac, char **av)
 
 	if (ac < 5 || ac > 6)
 	{
-		error_print("Error: Incorrect number of arguments.\nUse example:\n");
-		error_print("./philo ");
-		error_print(ARGS_ERR);
-		error("\nLast argument is optional.\n");
+		error("Error: Incorrect number of arguments.\n", 0);
+		error("Use example:\n", 0);
+		error("./philo ", 0);
+		error(ARGS_ERR, 0);
+		error("\nLast argument is optional.\n", 1);
 	}
 	init_set(&set, ac, av);
 	init_routine(&set);
