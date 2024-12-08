@@ -6,7 +6,7 @@
 /*   By: oel-feng@student.42.fr <oel-feng>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 14:48:16 by oel-feng@st       #+#    #+#             */
-/*   Updated: 2024/12/08 14:48:17 by oel-feng@st      ###   ########.fr       */
+/*   Updated: 2024/12/08 15:56:56 by oel-feng@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,8 @@ static void	end_routine(t_set *set, t_philo *philo)
 	pthread_mutex_destroy(&set->printing);
 }
 
-static void	check_death(t_set *set, t_philo *philo)
+static void	check_death(t_set *set, t_philo *philo, int i)
 {
-	int	i;
-
 	while (!set->died)
 	{
 		i = -1;
@@ -41,10 +39,10 @@ static void	check_death(t_set *set, t_philo *philo)
 			if (calc_time() - philo[i].last_meal_time > set->death_time)
 			{
 				printer(set, philo[i].id, "died");
-				set->died = 1;
+				1 && (pthread_mutex_lock(&set->death_check), set->died = 1);
+				pthread_mutex_unlock(&set->death_check);
 			}
 			pthread_mutex_unlock(&set->check_eat_2);
-			usleep(500);
 		}
 		if (set->died)
 			break ;
@@ -53,7 +51,11 @@ static void	check_death(t_set *set, t_philo *philo)
 			&& i < set->number && philo[i].eaten >= set->eat_requi)
 			i++;
 		if (i == set->number)
-			set->check_eat_1 = 1;
+		{
+			1 && (pthread_mutex_lock(&set->death_check), set->died = 1);
+			pthread_mutex_unlock(&set->death_check);
+			break ;
+		}
 	}
 }
 
@@ -83,17 +85,22 @@ static void	*routine(void *philo)
 	t_set	*set;
 
 	ph = (t_philo *)philo;
-	set = ph->set;
-	i = 0;
+	1 && (set = ph->set, i = 0);
 	if (ph->id % 2)
 		usleep(500);
-	while (!set->died)
+	while (1)
 	{
+		pthread_mutex_lock(&set->death_check);
+		if (set->died)
+		{
+			pthread_mutex_unlock(&set->death_check);
+			break ;
+		}
+		pthread_mutex_unlock(&set->death_check);
 		eating_routine(ph);
 		printer(set, ph->id, "is sleeping");
 		usleep(set->sleep_time * 1000);
-		ft_fprintf(1, "%ld %d is thinking\n",
-			calc_time() - set->start_time, ph->id);
+		printer(set, ph->id, "is thinking");
 		if (set->eat_requi && ++i == set->eat_requi)
 			break ;
 	}
@@ -114,6 +121,6 @@ void	init_routine(t_set *set)
 			error("Error: Thread creation failed.");
 		philo[i].last_meal_time = calc_time();
 	}
-	check_death(set, philo);
+	check_death(set, philo, -1);
 	end_routine(set, philo);
 }

@@ -1,9 +1,9 @@
-SRC = philo.c parsing_args.c ft_fprintf.c utils.c routine.c
+SRC = philo.c parsing_args.c routine.c
 OBJ = ${SRC:.c=.o}
 NAME = philo
 CC = cc
 RM = rm -f
-FLAG = -Wall -Wextra -Werror
+FLAG = -Wall -Wextra -Werror -g -fsanitize=address
 
 all: ${NAME}
 

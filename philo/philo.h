@@ -6,7 +6,7 @@
 /*   By: oel-feng@student.42.fr <oel-feng>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 14:48:19 by oel-feng@st       #+#    #+#             */
-/*   Updated: 2024/12/08 14:48:20 by oel-feng@st      ###   ########.fr       */
+/*   Updated: 2024/12/08 17:05:45 by oel-feng@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,18 +49,17 @@ typedef struct s_set
 	int				died;
 	size_t			check_eat_1;
 	size_t			start_time;
+	pthread_mutex_t	death_check;
 	pthread_mutex_t	check_eat_2;
-	pthread_mutex_t	*forks;
+	pthread_mutex_t	forks[201];
 	pthread_mutex_t	printing;
-	t_philo			philo[200];
+	t_philo			philo[201];
 }	t_set;
 
-ssize_t	calc_time(void);
-void	parsing(char **str);
+size_t	calc_time(void);
 void	error(char *err_msg);
 void	init_routine(t_set *set);
 void	printer(t_set *set, int id, char *msg);
 void	init_set(t_set *set, int ac, char **av);
-int		ft_fprintf(int fd, const char *format, ...);
 
 #endif
