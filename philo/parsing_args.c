@@ -6,7 +6,7 @@
 /*   By: oel-feng@student.42.fr <oel-feng>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 14:48:25 by oel-feng@st       #+#    #+#             */
-/*   Updated: 2024/12/08 17:00:25 by oel-feng@st      ###   ########.fr       */
+/*   Updated: 2024/12/08 17:09:23 by oel-feng@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,7 @@ static void	init_set_2(t_set *set)
 		if (pthread_mutex_init(&(set->forks[i]), NULL))
 			error("Error: Mutex init failed.");
 	}
-	if (pthread_mutex_init(&set->printing, NULL))
-		error("Error: Mutex init failed.");
-	if (pthread_mutex_init(&set->check_eat_2, NULL))
+	if (pthread_mutex_init(&set->last_meal, NULL))
 		error("Error: Mutex init failed.");
 	if (pthread_mutex_init(&set->death_check, NULL))
 		error("Error: Mutex init failed.");
