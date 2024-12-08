@@ -3,7 +3,7 @@ OBJ = ${SRC:.c=.o}
 NAME = philo
 CC = cc
 RM = rm -f
-FLAG = -Wall -Wextra -Werror -g -fsanitize=address
+FLAG = -Wall -Wextra -Werror
 
 all: ${NAME}
 
