@@ -1,4 +1,4 @@
-SRC = philo.c parsing_args.c ft_fprintf.c error.c
+SRC = philo.c parsing_args.c ft_fprintf.c utils.c routine.c
 OBJ = ${SRC:.c=.o}
 NAME = philo
 CC = cc

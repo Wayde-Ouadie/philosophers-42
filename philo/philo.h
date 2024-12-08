@@ -16,9 +16,20 @@
 # define INVALID_INPUT "Error: time_to_die or time_to_eat or time_to_sleep\
 	 set to values lower than 60."
 
+typedef struct s_philo
+{
+	int				id;
+	int				eaten;
+	int				l_fork;
+	int				r_fork;
+	size_t			last_meal_time;
+	pthread_t		thread_id;
+	struct s_set	*set;
+}	t_philo;
+
 typedef struct s_set
 {
-	size_t			number;
+	int				number;
 	size_t			death_time;
 	size_t			eat_time;
 	size_t			sleep_time;
@@ -29,22 +40,14 @@ typedef struct s_set
 	pthread_mutex_t	check_eat_2;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	printing;
-	struct s_philo	*philo;
+	t_philo			philo[200];
 }	t_set;
 
-typedef struct s_philo
-{
-	int			id;
-	int			eaten;
-	int			l_fork;
-	int			r_fork;
-	size_t		last_meal_time;
-	pthread_t	thread_id;
-	t_set		*set;
-}	t_philo;
-
+ssize_t	calc_time(void);
 void	parsing(char **str);
 void	error(char *err_msg);
+void	init_routine(t_set *set);
+void	printer(t_set *set, int id, char *msg);
 void	init_set(t_set *set, int ac, char **av);
 int		ft_fprintf(int fd, const char *format, ...);
 

@@ -11,5 +11,6 @@ int	main(int ac, char **av)
 		error("Last argument is optional.\n");
 	}
 	init_set(&set, ac, av);
+	init_routine(&set);
 	return (EXIT_SUCCESS);
 }

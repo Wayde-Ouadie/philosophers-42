@@ -37,17 +37,46 @@ static int	ft_atoi(char *str)
 			error("Error: Input number smaller or equal to int max.");
 		result = tmp;
 	}
-	if (result = 0)
+	if (result == 0)
 		error("Error: Inputs can't equal 0.");
 	return (result);
 }
 
-void	init_set(t_set *set, int ac, char **av)
+static void	init_philo(t_set *set)
 {
 	int	i;
 
+	i = set->number;
+	while (--i >= 0)
+	{
+		set->philo[i].id = i + 1;
+		set->philo[i].eaten = 0;
+		set->philo[i].last_meal_time = 0;
+		set->philo[i].set = set;
+		set->philo[i].l_fork = i;
+		set->philo[i].r_fork = (i + 1) % set->number;
+	}
+}
+
+static void	init_set_2(t_set *set)
+{
+	int	i;
+
+	i = set->number;
+	while (--i >= 0)
+	{
+		if (pthread_mutex_init(&set->forks[i], NULL))
+			error("Error: Mutex init failed.");
+	}
+	if (pthread_mutex_init(&set->printing, NULL))
+		error("Error: Mutex init failed.");
+	if (pthread_mutex_init(&set->check_eat_2, NULL))
+		error("Error: Mutex init failed.");
+}
+
+void	init_set(t_set *set, int ac, char **av)
+{
 	parsing(av);
-	i = 0;
 	set->number = ft_atoi(av[1]);
 	if (set->number > 200)
 		error("Error: Invalid number of philo.");
@@ -60,4 +89,8 @@ void	init_set(t_set *set, int ac, char **av)
 	set->check_eat_1 = 0;
 	if (ac == 6)
 		set->eat_requi = ft_atoi(av[5]);
+	else
+		set->eat_requi = -1;
+	init_set_2(set);
+	init_philo(set);
 }
