@@ -6,13 +6,13 @@
 /*   By: oel-feng@student.42.fr <oel-feng>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 14:48:25 by oel-feng@st       #+#    #+#             */
-/*   Updated: 2024/12/08 18:34:47 by oel-feng@st      ###   ########.fr       */
+/*   Updated: 2024/12/10 19:24:35 by oel-feng@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static void	parsing(char **str)
+static int	parsing(char **str)
 {
 	int	i;
 	int	j;
@@ -25,11 +25,12 @@ static void	parsing(char **str)
 		while (str[j][++i])
 		{
 			if (i == 0 && (str[j][i] == '+' || str[j][i] == '-'))
-				error("Error: Input only positive number without sign.", 1);
+				return (error(NO_SIGNS), -1);
 			else if (!(str[j][i] >= '0' && str[j][i] <= '9'))
-				error("Error: Input valid number.", 1);
+				return (error(INVALID_INPUT), -1);
 		}
 	}
+	return (1);
 }
 
 static int	ft_atoi(char *str)
@@ -46,11 +47,9 @@ static int	ft_atoi(char *str)
 	{
 		tmp = result * 10 - (48 - str[i++]);
 		if (tmp < result)
-			error("Error: Input number smaller or equal to int max.", 1);
+			return (-1337);
 		result = tmp;
 	}
-	if (result == 0)
-		error("Error: Inputs can't equal 0.", 1);
 	return (result);
 }
 
@@ -70,7 +69,7 @@ static void	init_philo(t_set *set)
 	}
 }
 
-static void	init_set_2(t_set *set)
+static int	init_mutex(t_set *set)
 {
 	int	i;
 
@@ -78,33 +77,45 @@ static void	init_set_2(t_set *set)
 	while (--i >= 0)
 	{
 		if (pthread_mutex_init(&(set->forks[i]), NULL))
-			error("Error: Mutex init failed.", 1);
+			return (error(MUTEX_ERR), -1);
 	}
 	if (pthread_mutex_init(&set->last_meal, NULL))
-		error("Error: Mutex init failed.", 1);
+		return (error(MUTEX_ERR), -1);
 	if (pthread_mutex_init(&set->death_check, NULL))
-		error("Error: Mutex init failed.", 1);
+		return (error(MUTEX_ERR), -1);
 	if (pthread_mutex_init(&set->printing, NULL))
-		error("Error: Mutex init failed.", 1);
+		return (error(MUTEX_ERR), -1);
+	if (pthread_mutex_init(&set->meal_check, NULL))
+		return (error(MUTEX_ERR), -1);
+	return (1);
 }
 
-void	init_set(t_set *set, int ac, char **av)
+int	init_set(t_set *set, int ac, char **av)
 {
-	parsing(av);
+	if (parsing(av) == -1)
+		return (-1);
 	set->number = ft_atoi(av[1]);
 	if (set->number > 200)
-		error("Error: Invalid number of philo.", 1);
+		return (error(INVALID_PHILO), -1);
 	set->death_time = ft_atoi(av[2]);
 	set->eat_time = ft_atoi(av[3]);
 	set->sleep_time = ft_atoi(av[4]);
 	if (set->death_time < 60 || set->eat_time < 60 || set->sleep_time < 60)
-		error(INVALID_INPUT, 1);
+		return (error(INVALID_INPUT), -1);
 	set->died = 0;
 	set->check_eat_1 = 0;
 	if (ac == 6)
 		set->eat_requi = ft_atoi(av[5]);
 	else
 		set->eat_requi = -1;
-	init_set_2(set);
+	if (set->number == -1337 || set->death_time == -1337 || set->eat_time == -1337
+		|| set->sleep_time == -1337 || set->eat_requi == -1337)
+		return (error(MAX_INPUT), -1);
+	if (set->number == 0 || set->death_time == 0 || set->eat_time == 0
+		|| set->sleep_time == 0 || set->eat_requi == 0)
+		return (error(DIFF_ZERO), -1);
+	if (init_mutex(set) == -1)
+		return (-1);
 	init_philo(set);
+	return (1);
 }

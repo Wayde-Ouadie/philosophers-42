@@ -6,11 +6,29 @@
 /*   By: oel-feng@student.42.fr <oel-feng>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 18:01:10 by oel-feng@st       #+#    #+#             */
-/*   Updated: 2024/12/08 18:43:11 by oel-feng@st      ###   ########.fr       */
+/*   Updated: 2024/12/09 15:00:00 by oel-feng@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void	my_sleep(size_t time, t_set *set)
+{
+	size_t	i;
+
+	i = calc_time();
+	while (1)
+	{
+		pthread_mutex_lock(&set->death_check);
+		if (calc_time() - i >= time || set->died == 1)
+		{
+			pthread_mutex_unlock(&set->death_check);
+			break ;
+		}
+		pthread_mutex_unlock(&set->death_check);
+		usleep(60);
+	}
+}
 
 void	end_routine(t_set *set, t_philo *philo)
 {
@@ -51,9 +69,11 @@ void	check_death(t_set *set, t_philo *philo, int i)
 		if (set->died)
 			break ;
 		i = 0;
+		pthread_mutex_lock(&set->meal_check);
 		while (set->eat_requi != -1
 			&& i < set->number && philo[i].eaten >= set->eat_requi)
 			i++;
+		pthread_mutex_unlock(&set->meal_check);
 		if (i == set->number)
 		{
 			pthread_mutex_lock(&set->death_check);
