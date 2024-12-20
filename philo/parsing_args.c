@@ -6,7 +6,7 @@
 /*   By: oel-feng@student.42.fr <oel-feng>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 14:48:25 by oel-feng@st       #+#    #+#             */
-/*   Updated: 2024/12/10 19:24:35 by oel-feng@st      ###   ########.fr       */
+/*   Updated: 2024/12/10 22:58:12 by oel-feng@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,20 +100,19 @@ int	init_set(t_set *set, int ac, char **av)
 	set->death_time = ft_atoi(av[2]);
 	set->eat_time = ft_atoi(av[3]);
 	set->sleep_time = ft_atoi(av[4]);
-	if (set->death_time < 60 || set->eat_time < 60 || set->sleep_time < 60)
-		return (error(INVALID_INPUT), -1);
-	set->died = 0;
-	set->check_eat_1 = 0;
+	1 && (set->died = 0, set->check_eat_1 = 0);
 	if (ac == 6)
 		set->eat_requi = ft_atoi(av[5]);
 	else
 		set->eat_requi = -1;
-	if (set->number == -1337 || set->death_time == -1337 || set->eat_time == -1337
-		|| set->sleep_time == -1337 || set->eat_requi == -1337)
+	if (set->number == -1337 || set->death_time == -1337
+		|| set->eat_time == -1337 || set->sleep_time == -1337
+		|| set->eat_requi == -1337)
 		return (error(MAX_INPUT), -1);
-	if (set->number == 0 || set->death_time == 0 || set->eat_time == 0
-		|| set->sleep_time == 0 || set->eat_requi == 0)
-		return (error(DIFF_ZERO), -1);
+	if (set->number == 0 || set->eat_requi == 0)
+		return (error(ZERO_ERR), -1);
+	if (set->death_time < 60 || set->eat_time < 60 || set->sleep_time < 60)
+		return (error(INVALID_INPUT), -1);
 	if (init_mutex(set) == -1)
 		return (-1);
 	init_philo(set);

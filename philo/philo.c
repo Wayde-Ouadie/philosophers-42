@@ -6,7 +6,7 @@
 /*   By: oel-feng@student.42.fr <oel-feng>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 14:48:22 by oel-feng@st       #+#    #+#             */
-/*   Updated: 2024/12/10 19:17:33 by oel-feng@st      ###   ########.fr       */
+/*   Updated: 2024/12/10 22:49:16 by oel-feng@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,11 +51,11 @@ int	main(int ac, char **av)
 	{
 		error(ARGS_ERR_1);
 		error(ARGS_ERR_2);
-		return (EXIT_FAILURE);
+		return (1);
 	}
 	if (init_set(&set, ac, av) == -1)
-		return (EXIT_FAILURE);
+		return (1);
 	if (init_routine(&set) == -1)
-		return (EXIT_FAILURE);
-	return (EXIT_SUCCESS);
+		return (1);
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: oel-feng@student.42.fr <oel-feng>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 18:01:10 by oel-feng@st       #+#    #+#             */
-/*   Updated: 2024/12/09 15:00:00 by oel-feng@st      ###   ########.fr       */
+/*   Updated: 2024/12/20 23:55:33 by oel-feng@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,15 @@ void	end_routine(t_set *set, t_philo *philo)
 		i++;
 	}
 	pthread_mutex_destroy(&set->death_check);
+	pthread_mutex_destroy(&set->last_meal);
+	pthread_mutex_destroy(&set->printing);
+	pthread_mutex_destroy(&set->meal_check);
 }
 
 static void	check_death_helper(t_set *set, t_philo *philo, int i)
 {
 	pthread_mutex_lock(&set->last_meal);
-	if (calc_time() - philo[i].last_meal_time > set->death_time)
+	if (calc_time() - philo[i].last_meal_time > (size_t)set->death_time)
 	{
 		printer(set, philo[i].id, "died");
 		pthread_mutex_lock(&set->death_check);

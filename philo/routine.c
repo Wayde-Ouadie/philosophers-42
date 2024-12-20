@@ -6,7 +6,7 @@
 /*   By: oel-feng@student.42.fr <oel-feng>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 14:48:16 by oel-feng@st       #+#    #+#             */
-/*   Updated: 2024/12/10 19:18:11 by oel-feng@st      ###   ########.fr       */
+/*   Updated: 2024/12/10 22:55:05 by oel-feng@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void	philo_check(t_philo *ph)
 	pthread_mutex_lock(&set->printing);
 	pthread_mutex_lock(&set->death_check);
 	if (!set->died)
-		printf("0 %d %s\n", ph->id, "has taken a fork");
+		printf("0 %d %s\n", ph->id, FORK);
 	pthread_mutex_unlock(&set->death_check);
 	pthread_mutex_unlock(&set->printing);
 	my_sleep(set->death_time, set);
@@ -37,11 +37,11 @@ static void	eating_routine(t_philo *ph)
 	else
 	{
 		pthread_mutex_lock(&set->forks[ph->l_fork]);
-		printer(set, ph->id, "has taken a fork");
+		printer(set, ph->id, FORK);
 		pthread_mutex_lock(&set->forks[ph->r_fork]);
-		printer(set, ph->id, "has taken a fork");
+		printer(set, ph->id, FORK);
 		pthread_mutex_lock(&set->last_meal);
-		printer(set, ph->id, "is eating");
+		printer(set, ph->id, EATING);
 		ph->last_meal_time = calc_time();
 		pthread_mutex_unlock(&set->last_meal);
 		my_sleep(set->eat_time, set);
@@ -73,9 +73,9 @@ static void	*routine(void *philo)
 		}
 		pthread_mutex_unlock(&set->death_check);
 		eating_routine(ph);
-		printer(set, ph->id, "is sleeping");
+		printer(set, ph->id, SLEEP);
 		my_sleep(set->sleep_time, set);
-		printer(set, ph->id, "is thinking");
+		printer(set, ph->id, THINKING);
 		if (set->eat_requi && ++i == set->eat_requi)
 			break ;
 	}

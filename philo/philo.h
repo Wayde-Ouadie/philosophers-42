@@ -6,7 +6,7 @@
 /*   By: oel-feng@student.42.fr <oel-feng>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 14:48:19 by oel-feng@st       #+#    #+#             */
-/*   Updated: 2024/12/10 19:15:12 by oel-feng@st      ###   ########.fr       */
+/*   Updated: 2024/12/10 22:55:10 by oel-feng@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,19 @@
 
 # include <stdio.h>
 # include <unistd.h>
-# include <stdlib.h>
-# include <stdarg.h>
-# include <string.h>
-# include <stdbool.h>
 # include <pthread.h>
 # include <sys/time.h>
 
+# define EATING "is eating"
+# define SLEEP "is sleeping"
+# define THINKING "is thinking"
+# define FORK "has taken a fork"
+
 # define MALL_ERR "Error: Malloc Failure."
 # define MUTEX_ERR "Error: Mutex init failed."
-# define INVALID_NBR "Error: Input valid number."
 # define THREAD_ERR "Error: Thread creation failed."
-# define DIFF_ZERO "Error: Inputs can't be equal to 0."
+# define ZERO_ERR "Error: Inputs can't be equal to 0."
+# define INVALID_NBR "Error: Input valid number."
 # define INVALID_PHILO "Error: Invalid number of philo."
 # define NO_SIGNS "Error: Input only positive number without sign."
 # define MAX_INPUT "Error: Input number smaller or equal to int max."
@@ -51,10 +52,10 @@ typedef struct s_philo
 typedef struct s_set
 {
 	int				number;
-	size_t			death_time;
-	size_t			eat_time;
-	size_t			sleep_time;
-	long			eat_requi;
+	int				death_time;
+	int				eat_time;
+	int				sleep_time;
+	int				eat_requi;
 	int				died;
 	size_t			check_eat_1;
 	size_t			start_time;
