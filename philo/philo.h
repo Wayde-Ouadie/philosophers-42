@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oel-feng@student.42.fr <oel-feng>          +#+  +:+       +#+        */
+/*   By: oel-feng <oel-feng@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 14:48:19 by oel-feng@st       #+#    #+#             */
-/*   Updated: 2024/12/10 22:55:10 by oel-feng@st      ###   ########.fr       */
+/*   Updated: 2025/01/23 20:27:48 by oel-feng         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,9 @@
 # define THINKING "is thinking"
 # define FORK "has taken a fork"
 
-# define MALL_ERR "Error: Malloc Failure."
 # define MUTEX_ERR "Error: Mutex init failed."
 # define THREAD_ERR "Error: Thread creation failed."
 # define ZERO_ERR "Error: Inputs can't be equal to 0."
-# define INVALID_NBR "Error: Input valid number."
 # define INVALID_PHILO "Error: Invalid number of philo."
 # define NO_SIGNS "Error: Input only positive number without sign."
 # define MAX_INPUT "Error: Input number smaller or equal to int max."
@@ -57,7 +55,6 @@ typedef struct s_set
 	int				sleep_time;
 	int				eat_requi;
 	int				died;
-	size_t			check_eat_1;
 	size_t			start_time;
 	pthread_mutex_t	death_check;
 	pthread_mutex_t	last_meal;

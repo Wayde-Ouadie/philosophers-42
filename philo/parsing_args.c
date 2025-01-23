@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_args.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oel-feng@student.42.fr <oel-feng>          +#+  +:+       +#+        */
+/*   By: oel-feng <oel-feng@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 14:48:25 by oel-feng@st       #+#    #+#             */
-/*   Updated: 2024/12/10 22:58:12 by oel-feng@st      ###   ########.fr       */
+/*   Updated: 2025/01/23 20:27:44 by oel-feng         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ static int	parsing(char **str)
 	int	i;
 	int	j;
 
-	i = -1;
 	j = 0;
 	while (str[++j])
 	{
@@ -100,7 +99,7 @@ int	init_set(t_set *set, int ac, char **av)
 	set->death_time = ft_atoi(av[2]);
 	set->eat_time = ft_atoi(av[3]);
 	set->sleep_time = ft_atoi(av[4]);
-	1 && (set->died = 0, set->check_eat_1 = 0);
+	set->died = 0;
 	if (ac == 6)
 		set->eat_requi = ft_atoi(av[5]);
 	else
