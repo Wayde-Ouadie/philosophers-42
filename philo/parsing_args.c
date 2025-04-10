@@ -12,6 +12,19 @@
 
 #include "philo.h"
 
+void	error(char *str)
+{
+	int		i;
+
+	if (str)
+	{
+		i = 0;
+		while (str[i])
+			i++;
+		write(2, str, i);
+	}
+}
+
 static int	parsing(char **str)
 {
 	int	i;
@@ -52,7 +65,7 @@ static int	ft_atoi(char *str)
 	return (result);
 }
 
-static void	init_philo(t_set *set)
+static int	init_mutex(t_set *set)
 {
 	int	i;
 
@@ -65,16 +78,6 @@ static void	init_philo(t_set *set)
 		set->philo[i].set = set;
 		set->philo[i].l_fork = i;
 		set->philo[i].r_fork = (i + 1) % set->number;
-	}
-}
-
-static int	init_mutex(t_set *set)
-{
-	int	i;
-
-	i = set->number;
-	while (--i >= 0)
-	{
 		if (pthread_mutex_init(&(set->forks[i]), NULL))
 			return (error(MUTEX_ERR), -1);
 	}
@@ -114,6 +117,5 @@ int	init_set(t_set *set, int ac, char **av)
 		return (error(INVALID_INPUT), -1);
 	if (init_mutex(set) == -1)
 		return (-1);
-	init_philo(set);
 	return (1);
 }

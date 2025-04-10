@@ -12,6 +12,14 @@
 
 #include "philo.h"
 
+size_t	calc_time(void)
+{
+	struct timeval	time;
+
+	gettimeofday(&time, NULL);
+	return (time.tv_sec * 1000 + time.tv_usec / 1000);
+}
+
 void	my_sleep(size_t time, t_set *set)
 {
 	size_t	i;

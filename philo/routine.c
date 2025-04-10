@@ -102,3 +102,13 @@ int	init_routine(t_set *set)
 	end_routine(set, philo);
 	return (1);
 }
+
+void	printer(t_set *set, int id, char *msg)
+{
+	pthread_mutex_lock(&set->printing);
+	pthread_mutex_lock(&set->death_check);
+	if (!set->died)
+		printf("%ld %d %s\n", calc_time() - set->start_time, id, msg);
+	pthread_mutex_unlock(&set->death_check);
+	pthread_mutex_unlock(&set->printing);
+}
