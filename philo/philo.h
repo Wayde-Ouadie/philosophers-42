@@ -18,6 +18,7 @@
 # include <pthread.h>
 # include <sys/time.h>
 
+# define DEAD "died"
 # define EATING "is eating"
 # define SLEEP "is sleeping"
 # define THINKING "is thinking"

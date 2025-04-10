@@ -54,7 +54,7 @@ static void	check_death_helper(t_set *set, t_philo *philo, int i)
 	pthread_mutex_lock(&set->last_meal);
 	if (calc_time() - philo[i].last_meal_time > (size_t)set->death_time)
 	{
-		printer(set, philo[i].id, "died");
+		printer(set, philo[i].id, DEAD);
 		pthread_mutex_lock(&set->death_check);
 		set->died = 1;
 		pthread_mutex_unlock(&set->death_check);

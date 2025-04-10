@@ -24,7 +24,7 @@ static void	philo_check(t_philo *ph)
 	pthread_mutex_unlock(&set->death_check);
 	pthread_mutex_unlock(&set->printing);
 	my_sleep(set->death_time, set);
-	printer(set, ph->id, "has died");
+	printer(set, ph->id, DEAD);
 }
 
 static void	eating_routine(t_philo *ph)
